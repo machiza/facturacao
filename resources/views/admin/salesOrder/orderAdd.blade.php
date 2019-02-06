@@ -107,18 +107,7 @@
                     </select>
               </div>
             </div>
-            <div class="col-md-3">
-              <div class="form-group">
-                <label>{{ trans('message.table.date') }}<span class="text-danger"> *</span></label>
-                <div class="input-group date">
-                  <div class="input-group-addon">
-                    <i class="fa fa-calendar"></i>
-                  </div>
-                  <input class="form-control" id="datepicker" type="text" name="ord_date">
-                </div>
-                <!-- /.input group -->
-              </div>
-            </div>
+            
 
           <div class="col-md-3">
             <div class="form-group">
@@ -131,6 +120,45 @@
                 <span id="errMsg" class="text-danger"></span>
             </div>
           </div>   
+        </div>
+
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group">
+                <label for="exampleInputEmail1">{{ trans('message.form.payment_term') }}</label>
+                  <select id="payment_term" class="form-control select2" name="payment_term">
+                  @foreach($paymentTerms as $term)
+                    <option value="{{$term->id}}" <?= ($term->defaults == 1 ? 'selected':'')?>>{{$term->terms}}</option>
+                  @endforeach
+                  </select>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>{{ trans('message.table.date') }}<span class="text-danger"> *</span></label>
+              <div class="input-group date">
+                <div class="input-group-addon">
+                  <i class="fa fa-calendar"></i>
+                </div>
+                <input class="form-control" id="datepicker" type="text" name="ord_date">
+              </div>
+              <!-- /.input group -->
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>{{ trans('message.table.date') }} Fim<span class="text-danger"> *</span></label>
+              <div class="input-group date">
+                <div class="input-group-addon">
+                  <i class="fa fa-calendar"></i>
+                </div>
+                <input class="form-control" id="datepicker1" type="text" name="ord_date" disabled>
+              </div>
+              <!-- /.input group -->
+            </div>
+          </div>
         </div>
 
         <div class="row">
@@ -312,19 +340,38 @@
 
 <script type="text/javascript">
 
-String.prototype.number_format = function(d) {
+  // =========================== Mexda 4 =============================
+  $('#payment_term').change(function() {
+    var route = SITE_URL+"/termo_pagamento/"+$('#payment_term').val()
+
+    $.get(route, function(res) {
+      var newdate = new Date();
+
+      newdate.setDate(newdate.getDate() + Number(res));
+
+      var dd = newdate.getDate();
+      var mm = newdate.getMonth() + 1;
+      var y = newdate.getFullYear();
+      var dataFim = mm + '/' + dd + '/' + y;
+
+      $('#datepicker1').datepicker('update', new Date(dataFim));
+    });
+
+  });
+  // ======================== end Mexida 4 ===========================
+
+  String.prototype.number_format = function(d) {
     var n = this;
     var c = isNaN(d = Math.abs(d)) ? 2 : d;
     var s = n < 0 ? "-" : "";
     var i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "", j = (j = i.length) > 3 ? j % 3 : 0;
     return s + (j ? i.substr(0, j) + ',' : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + ',') + (c ? '.' + Math.abs(n - i).toFixed(c).slice(2) : "");
-}
+  }
 
-
-$('.custom-item').on('click', function() {
-  //console.log("Entrei Mr. Smart");
-recalcularCambio();
-});
+  $('.custom-item').on('click', function() {
+    //console.log("Entrei Mr. Smart");
+    recalcularCambio();
+  });
   
  function formatar_moeda(his){
   return moeda(his,'.',',',event);
@@ -519,21 +566,31 @@ $(function() {
         return false;
     }
 
+    // Mexida 3 datapicker1
     $(function () {
-        //Initialize Select2 Elements
-        $(".select2").select2({});
+      //Initialize Select2 Elements
+      $(".select2").select2({});
 
-        //Date picker
-        $('#datepicker').datepicker({
-            autoclose: true,
-            todayHighlight: true,
-            format: '{{Session::get('date_format_type')}}'
-        });
+      //Date picker
+      $('#datepicker').datepicker({
+          autoclose: true,
+          todayHighlight: true,
+          format: '{{Session::get('date_format_type')}}'
+      });
 
-        $('.ref').val(Math.floor((Math.random() * 100) + 1));
-       
-         $('#datepicker').datepicker('update', new Date());
-    })
+      $('.ref').val(Math.floor((Math.random() * 100) + 1));
+      
+      $('#datepicker').datepicker('update', new Date());
+
+      // ====================== new ==========================
+      $('#datepicker1').datepicker({
+          autoclose: true,
+          todayHighlight: true,
+          format: '{{Session::get('date_format_type')}}'
+      });
+      $('#datepicker1').datepicker('update', new Date());
+      // ==================== end new ======================
+    });
 
     var stack = [];
     var token = $("#token").val();

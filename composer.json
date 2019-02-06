@@ -18,7 +18,7 @@
         "ignited/laravel-omnipay": "*",
         "omnipay/paypal": "*",
         "milon/barcode": "^5.3",
-        "doctrine/dbal": "^2.5"		
+        "doctrine/dbal": "^2.9"		
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -36,11 +36,6 @@
         },
         "files": [
             "app/helpers.php"
-        ]
-    },
-    "autoload-dev": {
-        "classmap": [
-            "tests/TestCase.php"
         ]
     },
     "scripts": {

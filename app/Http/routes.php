@@ -50,11 +50,16 @@
         Route::get('customer_payments/success','CustomerPayController@paymentSuccess');
         Route::get('customer_payments/cancel','CustomerPayController@paymentCancel');
         Route::get('customer_payments/fail','CustomerPayController@paymentFail');
-        Route::post('customer_payments/bank-payment','CustomerPayController@bankPayment');
+		Route::post('customer_payments/bank-payment','CustomerPayController@bankPayment');
+		
+		Route::get('termo_pagamento/{id}','SalesOrderController@termo_pagamento');
 
         // Customer payment end
 
 		Route::group(['middleware' => ['auth','locale'] ], function() {
+
+		// Novo
+		
 	
 		/* User Actions */
 		Route::get('dashboard','DashboardController@index');

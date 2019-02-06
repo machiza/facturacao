@@ -246,6 +246,8 @@ class PaymentController extends Controller
 
       return view('admin.payment.paymentNew', $data);
     }
+
+    
     
   
     public function getInvoices(){ 
@@ -1592,7 +1594,7 @@ class PaymentController extends Controller
         }// fim do foreach
           
           //apagar o historico das pagamentos
-         $document_listas=DB::table('payment_history')
+         $document_litermo_pagamentostas=DB::table('payment_history')
                      ->where('reference',$dados->reference)
                      ->select('payment_history.*')->delete();
                      //->select('payment_history.*')->get();
@@ -1613,6 +1615,17 @@ class PaymentController extends Controller
                 */  
         }
 
+    // public function periodoCalcula($id) {
+    //   return $price = DB::table('invoice_payment_terms')
+    //                   ->where('id', $id)
+    //                   ->first()->days_before_due;
+    // }
+
+    public function termo_pagamento($id) {
+      return $diasDepois = DB::table('invoice_payment_terms')
+                          ->where('id', $id)
+                          ->first()->days_before_due;
+    }
   }
 
 ?>

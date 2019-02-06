@@ -299,32 +299,35 @@ class ActualizarTabelas extends Migration
      
             if(Schema::hasColumn('purchase_vd_details', 'discount_percent')){
              
-             }else{
+            }else {
                     Schema::table('purchase_vd_details', function ($table) {
                     $table->double('discount_percent');
-                    
+                }); 
+            }
 
 
-                    }); 
-             }
-
-
-             if(Schema::hasColumn('sales_orders', 'moedas_id')){
+            if(Schema::hasColumn('sales_orders', 'moedas_id')) {
              
-       }else{
-              Schema::table('sales_orders', function ($table) {
-             
-                
-              $table->double('daily_exchange')->null();
-              $table->double('total_foreign')->null();
-              $table->integer('moedas_id')->unsigned()->null();
-  
-              $table->foreign('moedas_id')->references('id')->on('moedas');  
+            }else {
+                Schema::table('sales_orders', function ($table) {
+                    $table->double('daily_exchange')->null();
+                    $table->double('total_foreign')->null();
+                    $table->integer('moedas_id')->unsigned()->null();
+    
+                    $table->foreign('moedas_id')->references('id')->on('moedas'); 
+                }); 
+            }
 
-              
-              
-              }); 
-       }
+            // // Novo
+            if(Schema::hasColumn('sales_orders', 'termo_pagamento_id')) {
+             
+            }else {
+                Schema::table('sales_orders', function ($table) {
+                    $table->integer('termo_pagamento_id')->unsigned()->null();
+    
+                    $table->foreign('termo_pagamento_id')->references('id')->on('invoice_payment_terms'); 
+                }); 
+            }
              
 
 

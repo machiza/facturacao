@@ -84,6 +84,7 @@ class SalesOrderController extends Controller
         $data['parte_ano'] = substr($dt,  0, 4);
 
         $data['salesType'] = DB::table('sales_types')->select('sales_type','id','defaults')->get();
+        $data['paymentTerms'] = DB::table('invoice_payment_terms')->get();
        
         $order_count = DB::table('sales_orders')->where('trans_type',SALESORDER)->count();
 
@@ -208,6 +209,7 @@ class SalesOrderController extends Controller
         $salesOrder['from_stk_loc'] = $request->from_stk_loc;
         $salesOrder['payment_term'] = 2;
         $salesOrder['total'] = $request->total;
+        $salesOrder['termo_pagamento_id'] = $request->payment_term;
         $salesOrder['created_at'] = date('Y-m-d H:i:s');
         $salesOrder['requisicao'] = $request->requisicao;
         $salesOrderId = \DB::table('sales_orders')->insertGetId($salesOrder);
@@ -355,6 +357,12 @@ class SalesOrderController extends Controller
         return view('admin.salesOrder.orderEdit', $data);
        
    }
+
+    public function termo_pagamento($id) {
+        return $diasDepois = DB::table('invoice_payment_terms')
+                        ->where('id', $id)
+                        ->first()->days_before_due;
+    }
 
 
 
