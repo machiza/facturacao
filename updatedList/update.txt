@@ -1,1 +1,0 @@
-1.Add role on sales sub menu,Banking and Transactions sub menu separately
